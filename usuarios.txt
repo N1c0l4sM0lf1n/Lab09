@@ -3,3 +3,4 @@ nico,Jugador
 nico,Nicolas
 nico,Nicolas
 nico,Nicolas
+nico,Jugador

@@ -23,14 +23,32 @@ public class Ruleta {
 
     public Resultado jugar(ApuestaBase apuesta) {
 
+        if (apuesta == null) {
+            throw new IllegalArgumentException(
+                    "La apuesta no puede ser nula"
+            );
+        }
+
+        if (apuesta.getMonto() <= 0) {
+            throw new IllegalArgumentException(
+                    "Monto inválido"
+            );
+        }
+
+        if (apuesta.getMonto() > saldo) {
+            throw new IllegalArgumentException(
+                    "Saldo insuficiente"
+            );
+        }
+
         int numero = random.nextInt(37);
 
         String color = obtenerColor(numero);
 
         boolean gano =
-                apuesta.acierta(numero,color);
+                apuesta.acierta(numero, color);
 
-        if(gano){
+        if (gano) {
             saldo += apuesta.getMonto();
         } else {
             saldo -= apuesta.getMonto();
@@ -47,6 +65,34 @@ public class Ruleta {
         repositorio.guardarResultado(resultado);
 
         return resultado;
+    }
+
+    public void depositar(int monto) {
+
+        if (monto <= 0) {
+            throw new IllegalArgumentException(
+                    "El depósito debe ser mayor a 0"
+            );
+        }
+
+        saldo += monto;
+    }
+
+    public void retirar(int monto) {
+
+        if (monto <= 0) {
+            throw new IllegalArgumentException(
+                    "Monto inválido"
+            );
+        }
+
+        if (monto > saldo) {
+            throw new IllegalArgumentException(
+                    "Saldo insuficiente"
+            );
+        }
+
+        saldo -= monto;
     }
 
     public String obtenerColor(int numero){

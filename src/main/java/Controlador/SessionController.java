@@ -9,20 +9,26 @@ public class SessionController {
     private ResultadoController resultadoController;
 
     public void registrarUsuario(String u,String p,String n){
+
         usuarioActual = new Usuario(u,p,n);
 
         ArchivoUsuario.guardarUsuario(usuarioActual);
 
-        IRepositorioResultados repo = new RepositorioEnMemoria();
+        IRepositorioResultados repo =
+                new RepositorioEnMemoria();
 
         Ruleta ruleta =
                 new Ruleta(1000, repo);
 
-        ruletaController = new RuletaController(ruleta,this);
-        resultadoController = new ResultadoController(this, repo);
+        ruletaController =
+                new RuletaController(ruleta,this);
+
+        resultadoController =
+                new ResultadoController(this, repo);
     }
 
     public boolean iniciarSesion(String u,String p){
+
         return usuarioActual != null &&
                 usuarioActual.validarCredenciales(u,p);
     }

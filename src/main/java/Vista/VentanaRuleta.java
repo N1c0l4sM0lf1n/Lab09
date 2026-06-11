@@ -13,46 +13,84 @@ public class VentanaRuleta {
         this.session = session;
     }
 
-    // ESTE MÉTODO LO AGREGAS
     public void mostrar(){
         jugar();
     }
 
     public void jugar(){
 
-        String opcion = JOptionPane.showInputDialog(
-                "ROJO / NEGRO / PAR / IMPAR"
-        );
+        try {
 
-        int monto = Integer.parseInt(
-                JOptionPane.showInputDialog("Monto:")
-        );
+            String opcion =
+                    JOptionPane.showInputDialog(
+                            "ROJO / NEGRO / PAR / IMPAR"
+                    );
 
-        ApuestaBase apuesta;
+            if(opcion == null){
+                return;
+            }
 
-        switch (opcion.toUpperCase()) {
-            case "ROJO":
-                apuesta = new ApuestaRojo(monto);
-                break;
-            case "NEGRO":
-                apuesta = new ApuestaNegro(monto);
-                break;
-            case "PAR":
-                apuesta = new ApuestaPar(monto);
-                break;
-            default:
-                apuesta = new ApuestaImpar(monto);
+            int monto =
+                    Integer.parseInt(
+                            JOptionPane.showInputDialog(
+                                    "Monto:"
+                            )
+                    );
+
+            ApuestaBase apuesta;
+
+            switch (opcion.toUpperCase()) {
+
+                case "ROJO":
+                    apuesta = new ApuestaRojo(monto);
+                    break;
+
+                case "NEGRO":
+                    apuesta = new ApuestaNegro(monto);
+                    break;
+
+                case "PAR":
+                    apuesta = new ApuestaPar(monto);
+                    break;
+
+                case "IMPAR":
+                    apuesta = new ApuestaImpar(monto);
+                    break;
+
+                default:
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Tipo de apuesta inválido"
+                    );
+                    return;
+            }
+
+            Resultado r =
+                    session.getRuletaController()
+                            .jugar(apuesta);
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Número: " + r.getNumero()
+                            + "\nTipo: " + r.getTipo()
+                            + "\nResultado: "
+                            + (r.isGano()
+                            ? "Ganaste"
+                            : "Perdiste")
+                            + "\nSaldo actual: $"
+                            + session
+                            .getRuletaController()
+                            .getSaldo()
+            );
+
+        } catch (Exception ex){
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
-
-        Resultado r =
-                session.getRuletaController().jugar(apuesta);
-
-        JOptionPane.showMessageDialog(
-                null,
-                "Número: " + r.getNumero()
-                        + "\nTipo: " + r.getTipo()
-                        + "\nResultado: " +
-                        (r.isGano() ? "Ganaste" : "Perdiste")
-        );
     }
 }
