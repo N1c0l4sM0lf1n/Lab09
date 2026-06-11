@@ -15,14 +15,20 @@ class EstadisticasTest {
         Estadisticas e =
                 new Estadisticas(repo);
 
-        assertEquals(0,
-                e.getTotalJugadas());
+        assertEquals(
+                0,
+                e.getTotalJugadas()
+        );
 
-        assertEquals(0,
-                e.getVictorias());
+        assertEquals(
+                0,
+                e.getVictorias()
+        );
 
-        assertEquals(0.0,
-                e.getPorcentajeVictorias());
+        assertEquals(
+                0.0,
+                e.getPorcentajeVictorias()
+        );
     }
 
     @Test

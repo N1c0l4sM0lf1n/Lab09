@@ -23,25 +23,88 @@ class RuletaTest {
         assertNotNull(resultado);
 
         assertTrue(
-                resultado.getNumero() >= 0 &&
-                        resultado.getNumero() <= 36
+                resultado.getNumero() >= 0
+                        && resultado.getNumero() <= 36
         );
     }
 
     @Test
-    void apostarMasQueSaldoDebeLanzarExcepcion() {
-
-        IRepositorioResultados repo =
-                new RepositorioEnMemoria();
+    void depositarDebeAumentarSaldo() {
 
         Ruleta ruleta =
-                new Ruleta(10, repo);
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
+
+        ruleta.depositar(50);
+
+        assertEquals(
+                150,
+                ruleta.getSaldo()
+        );
+    }
+
+    @Test
+    void depositoNegativoDebeFallar() {
+
+        Ruleta ruleta =
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> ruleta.depositar(-50)
+        );
+    }
+
+    @Test
+    void depositoCeroDebeFallar() {
+
+        Ruleta ruleta =
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> ruleta.depositar(0)
+        );
+    }
+
+    @Test
+    void apostarTodoElSaldoDebePermitirse() {
+
+        Ruleta ruleta =
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
+
+        assertDoesNotThrow(
+                () -> ruleta.jugar(
+                        new ApuestaPar(100)
+                )
+        );
+    }
+
+    @Test
+    void apostarMasQueSaldoDebeFallar() {
+
+        Ruleta ruleta =
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
 
         IllegalArgumentException ex =
                 assertThrows(
                         IllegalArgumentException.class,
                         () -> ruleta.jugar(
-                                new ApuestaRojo(100)
+                                new ApuestaPar(101)
                         )
                 );
 
@@ -52,23 +115,66 @@ class RuletaTest {
     }
 
     @Test
-    void saldoNuncaDebeSerNegativo() {
-
-        IRepositorioResultados repo =
-                new RepositorioEnMemoria();
+    void noDebePermitirApostarConSaldoCero() {
 
         Ruleta ruleta =
-                new Ruleta(1000, repo);
+                new Ruleta(
+                        0,
+                        new RepositorioEnMemoria()
+                );
 
-        for(int i = 0; i < 1000; i++){
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> ruleta.jugar(
+                        new ApuestaPar(1)
+                )
+        );
+    }
 
-            ruleta.jugar(
-                    new ApuestaPar(1)
-            );
-        }
+    @Test
+    void retirarDineroCorrectamente() {
 
-        assertTrue(
-                ruleta.getSaldo() >= 0
+        Ruleta ruleta =
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
+
+        ruleta.retirar(40);
+
+        assertEquals(
+                60,
+                ruleta.getSaldo()
+        );
+    }
+
+    @Test
+    void retirarMasQueSaldoDebeFallar() {
+
+        Ruleta ruleta =
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> ruleta.retirar(101)
+        );
+    }
+
+    @Test
+    void retirarMontoNegativoDebeFallar() {
+
+        Ruleta ruleta =
+                new Ruleta(
+                        100,
+                        new RepositorioEnMemoria()
+                );
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> ruleta.retirar(-1)
         );
     }
 
@@ -79,7 +185,10 @@ class RuletaTest {
                 new RepositorioEnMemoria();
 
         Ruleta ruleta =
-                new Ruleta(500000, repo);
+                new Ruleta(
+                        500000,
+                        repo
+                );
 
         for(int i = 0; i < 100000; i++){
 

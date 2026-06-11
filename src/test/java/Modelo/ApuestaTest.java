@@ -9,10 +9,18 @@ class ApuestaTest {
     @Test
     void crearApuestaRojoValida() {
 
-        ApuestaRojo apuesta = new ApuestaRojo(100);
+        ApuestaRojo apuesta =
+                new ApuestaRojo(100);
 
-        assertEquals(100, apuesta.getMonto());
-        assertEquals("Rojo", apuesta.getEtiqueta());
+        assertEquals(
+                100,
+                apuesta.getMonto()
+        );
+
+        assertEquals(
+                "Rojo",
+                apuesta.getEtiqueta()
+        );
     }
 
     @Test
@@ -44,11 +52,17 @@ class ApuestaTest {
                 new ApuestaImpar(10)
         };
 
-        for (ApuestaBase apuesta : apuestas) {
+        for(ApuestaBase apuesta : apuestas){
 
             assertNotNull(apuesta);
-            assertNotNull(apuesta.getEtiqueta());
-            assertTrue(apuesta.getMonto() > 0);
+
+            assertNotNull(
+                    apuesta.getEtiqueta()
+            );
+
+            assertTrue(
+                    apuesta.getMonto() > 0
+            );
         }
     }
 }
