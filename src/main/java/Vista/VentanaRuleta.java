@@ -83,7 +83,16 @@ public class VentanaRuleta {
                             .getSaldo()
             );
 
-        } catch (Exception ex){
+        } catch (NumberFormatException ex) {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Debe ingresar un monto numérico.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+        } catch (IllegalArgumentException ex) {
 
             JOptionPane.showMessageDialog(
                     null,

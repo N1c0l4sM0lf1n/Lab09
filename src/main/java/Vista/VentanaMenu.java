@@ -94,7 +94,14 @@ public class VentanaMenu {
                                 .getSaldo()
                 );
 
-            } catch (Exception ex){
+            } catch (NumberFormatException ex) {
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Debe ingresar un número válido."
+                );
+
+            } catch (IllegalArgumentException ex) {
 
                 JOptionPane.showMessageDialog(
                         null,

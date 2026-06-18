@@ -13,7 +13,13 @@ public class RuletaController {
         this.session = session;
     }
 
-    public Resultado jugar(ApuestaBase apuesta){
+    public Resultado jugar(ApuestaBase apuesta) {
+
+        if (apuesta == null) {
+            throw new IllegalArgumentException(
+                    "Debe proporcionar una apuesta válida."
+            );
+        }
 
         Resultado r = ruleta.jugar(apuesta);
 

@@ -8,9 +8,29 @@ public class SessionController {
     private RuletaController ruletaController;
     private ResultadoController resultadoController;
 
-    public void registrarUsuario(String u,String p,String n){
+    public void registrarUsuario(String u,
+                                 String p,
+                                 String n) {
 
-        usuarioActual = new Usuario(u,p,n);
+        if (u == null || u.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Debe ingresar un nombre de usuario."
+            );
+        }
+
+        if (p == null || p.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Debe ingresar una contraseña."
+            );
+        }
+
+        if (n == null || n.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Debe ingresar un nombre."
+            );
+        }
+
+        usuarioActual = new Usuario(u, p, n);
 
         ArchivoUsuario.guardarUsuario(usuarioActual);
 
@@ -21,16 +41,21 @@ public class SessionController {
                 new Ruleta(1000, repo);
 
         ruletaController =
-                new RuletaController(ruleta,this);
+                new RuletaController(ruleta, this);
 
         resultadoController =
                 new ResultadoController(this, repo);
     }
 
-    public boolean iniciarSesion(String u,String p){
+    public boolean iniciarSesion(String u,
+                                 String p) {
+
+        if (u == null || p == null) {
+            return false;
+        }
 
         return usuarioActual != null &&
-                usuarioActual.validarCredenciales(u,p);
+                usuarioActual.validarCredenciales(u, p);
     }
 
     public Usuario getUsuario(){
@@ -48,4 +73,6 @@ public class SessionController {
     public void cerrarSesion() {
         usuarioActual = null;
     }
+
+
 }
